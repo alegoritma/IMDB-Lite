@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>cse2_db</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200425103759_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200425103759_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200425103833_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200425103833_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200425134135_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200425134135_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200425142112_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200425142112_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200426075202_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200426075202_InitialCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+
+</Project>
