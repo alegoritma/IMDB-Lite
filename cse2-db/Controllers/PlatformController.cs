@@ -41,5 +41,14 @@ namespace cse2_db.Controllers
             db.SaveChanges();
             return Ok(new ResWrapper { Status = "OK", args = platform});
         }
+        public IActionResult BindMovie(long MovieId, int PlatformId)
+        {
+            MoviePlatform moviePlatform = new MoviePlatform();
+            moviePlatform.MovieId = MovieId;
+            moviePlatform.PlatformId = PlatformId;
+            db.MoviePlatforms.Add(moviePlatform);
+            db.SaveChanges();
+            return Ok(new ResWrapper { Status = "OK", args = moviePlatform });
+        }
     }
 }

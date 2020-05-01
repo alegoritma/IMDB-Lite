@@ -333,7 +333,7 @@ namespace cse2_db.Controllers
             db.TvEpisodeDirectors.RemoveRange(tvEpisodeDirector);
             db.TvEpisodeWriters.RemoveRange(tvEpisodeWriter);
             db.TvEpisodeProducers.RemoveRange(tvEpisodeProducer);
-
+            db.SaveChanges();
             return Ok(new {
                 tvEpisodeCast,
                 tvEpisodeDirector,
