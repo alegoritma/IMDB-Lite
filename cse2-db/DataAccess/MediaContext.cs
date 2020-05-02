@@ -244,7 +244,7 @@ namespace cse2_db.DataAccess
         {
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseNpgsql(
-                "Host=localhost;Database=IMDBLite2;Username=IMDB_API_USER;Password=123456"
+                "Host=localhost;Database=IMDBLite;Username=IMDB_API_USER;Password=123456"
                 );
             //Add-Migration InitialCreate
             //Update-Database

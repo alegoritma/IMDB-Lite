@@ -6,6 +6,6 @@ bu işlemin davranışını düzenleyebilirsiniz. Bununla ilgili daha fazla bilg
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\14vol\Desktop\cse\cse-2.2\database\Term Project\firebaseBackend\dotnetcore</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\14vol\source\repos\cse2-db\published</_PublishTargetUrl>
   </PropertyGroup>
 </Project>
