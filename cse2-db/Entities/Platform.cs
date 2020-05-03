@@ -8,7 +8,7 @@ namespace cse2_db.Entities
 {
     public class Platform
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
         [MaxLength(500)]

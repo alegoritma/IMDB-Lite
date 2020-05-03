@@ -126,8 +126,16 @@ namespace cse2_db.Controllers
                                           select Character).ToList()
                         }).ToList();
 
+            var platforms = (from MoviePlatform in db.MoviePlatforms
+                             from Platform in db.Platforms
+                             where MoviePlatform.MovieId == Id
+                             where MoviePlatform.PlatformId == Platform.Id
+                             select Platform).ToList();
+
             // Complexity: 1
             var movie = (from Movie in db.Movies
+                         from MoviePlatform in db.MoviePlatforms
+                         where MoviePlatform.MovieId == Id
                           where Movie.Id == Id
                           select new
                           {
@@ -145,6 +153,7 @@ namespace cse2_db.Controllers
                               genres,
                               countries, 
                               keywords,
+                              platforms,
                               Crew = new
                               {
                                   directors,

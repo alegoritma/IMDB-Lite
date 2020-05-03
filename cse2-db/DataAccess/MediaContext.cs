@@ -143,10 +143,10 @@ namespace cse2_db.DataAccess
             modelBuilder.Entity<TvEpisodeWriter>()
                 .HasKey(x => new { x.PersonId, x.TvEpisodeId });
             modelBuilder.Entity<MoviePlatform>()
-                .HasNoKey();
+                .HasKey(x => new { x.MovieId, x.PlatformId });
             modelBuilder.Entity<TvSeriesPlatform>()
-                .HasNoKey();
-
+                .HasKey(x => new { x.TvSeriesId, x.PlatformId });
+            
             modelBuilder.Entity<Character>()
                 .HasIndex(e => e.Name);
 

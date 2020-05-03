@@ -50,5 +50,38 @@ namespace cse2_db.Controllers
             db.SaveChanges();
             return Ok(new ResWrapper { Status = "OK", args = moviePlatform });
         }
+        public IActionResult BindTvSeries(long TvSeriesId, int PlatformId)
+        {
+            TvSeriesPlatform tvSeriesPlatform = new TvSeriesPlatform();
+            tvSeriesPlatform.TvSeriesId = TvSeriesId;
+            tvSeriesPlatform.PlatformId = PlatformId;
+            db.TvSeriesPlatforms.Add(tvSeriesPlatform);
+            db.SaveChanges();
+            return Ok(new ResWrapper { Status = "OK", args = tvSeriesPlatform });
+        }
+        public IActionResult GetShowsByPlatform(long Id)
+        {
+            var result = (from TvSeriesPlatform in db.TvSeriesPlatforms
+                          where TvSeriesPlatform.PlatformId == Id
+                          select new { 
+                              TvSeriesPlatform.TvSeries.Id,
+                              TvSeriesPlatform.TvSeries.Title,
+                              TvSeriesPlatform.TvSeries.Image.ImageUrl, 
+                              Type = "TvSeries" 
+                          })
+                         .Distinct()
+                         .ToList()
+                         .Concat((
+                          from MoviePlatform in db.MoviePlatforms
+                          where MoviePlatform.PlatformId == Id
+                          select new
+                          {
+                              MoviePlatform.Movie.Id,
+                              MoviePlatform.Movie.Title,
+                              MoviePlatform.Movie.Image.ImageUrl,
+                              Type = "Movie" })
+                         .Distinct());
+            return Ok(result);
+        }
     }
 }
