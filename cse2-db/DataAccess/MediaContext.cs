@@ -121,9 +121,9 @@ namespace cse2_db.DataAccess
             modelBuilder.Entity<TvEpisodeKeyWord>()
                 .HasNoKey();
             modelBuilder.Entity<MovieLanguage>()
-                .HasNoKey();
+                .HasKey(x => new { x.MovieId, x.LanguageId });
             modelBuilder.Entity<TvEpisodeLanguage>()
-                .HasNoKey();
+                .HasKey(x => new { x.TvEpisodeId, x.LanguageId });
             modelBuilder.Entity<MovieKeyWord>()
                 .HasNoKey();
             modelBuilder.Entity<TvEpisodeKeyWord>()
