@@ -25,46 +25,46 @@ namespace cse2_db.Controllers
         }
         // Request 4
         // GET: /?{id)
-        public IActionResult Get(long Id)
+        public async Task<IActionResult> Get(long Id)
         {
             // Complexities: 9
-            var companies = (from Company in db.Companies
+            var companies = await (from Company in db.Companies
                              from MovieCompany in db.MovieCompanies
                              where MovieCompany.MovieId == Id
                              where Company.Id == MovieCompany.CompanyId
-                             select Company).ToList();
+                             select Company).ToListAsync();
 
-            var languages = (from Language in db.Languages
+            var languages = await (from Language in db.Languages
                              from MovieLanguage in db.MovieLanguages
                              where MovieLanguage.MovieId == Id
                              where Language.Id == MovieLanguage.LanguageId
-                             select Language).ToList();
+                             select Language).ToListAsync();
 
-            var locations = (from Location in db.Locations
+            var locations = await (from Location in db.Locations
                              from MovieLocation in db.MovieLocations
                              where MovieLocation.MovieId == Id
                              where Location.Id == MovieLocation.LocationId
-                             select Location).ToList();
+                             select Location).ToListAsync();
 
-            var genres = (from MovieGenre in db.MovieGenres
+            var genres = await (from MovieGenre in db.MovieGenres
                           from Genre in db.Genres
                           where MovieGenre.MovieId == Id
                           where Genre.Id == MovieGenre.GenreId
-                          select Genre).ToList();
+                          select Genre).ToListAsync();
 
-            var countries = (from MovieCountry in db.MovieCountries
+            var countries = await (from MovieCountry in db.MovieCountries
                              from Country in db.Countries
                              where MovieCountry.MovieId == Id
                              where Country.Id == MovieCountry.CountryId
-                             select Country).ToList();
+                             select Country).ToListAsync();
             
-            var keywords = (from KeyWord in db.KeyWords
+            var keywords = await (from KeyWord in db.KeyWords
                             from MovieKeyWord in db.MovieKeyWords
                             where MovieKeyWord.MovieId == Id
                             where KeyWord.Id == MovieKeyWord.KeyWordId
-                            select KeyWord).ToList();
+                            select KeyWord).ToListAsync();
             
-            var directors = (from MovieDirector in db.MovieDirectors
+            var directors = await (from MovieDirector in db.MovieDirectors
                              from Person in db.People
                              where MovieDirector.MovieId == Id
                              where MovieDirector.PersonId == Person.Id
@@ -75,9 +75,9 @@ namespace cse2_db.Controllers
                                  Person.Image.ImageUrl,
                                  Person.BirthDate,
                                  Person.DeathDate
-                             }).ToList();
+                             }).ToListAsync();
 
-            var writers = (from MovieWriter in db.MovieWriters
+            var writers = await (from MovieWriter in db.MovieWriters
                            from Person in db.People
                            where MovieWriter.MovieId == Id
                            where MovieWriter.PersonId == Person.Id
@@ -88,9 +88,9 @@ namespace cse2_db.Controllers
                                Person.Image.ImageUrl,
                                Person.BirthDate,
                                Person.DeathDate
-                           }).ToList();
+                           }).ToListAsync();
 
-            var producers = (from MovieProducer in db.MovieProducers
+            var producers = await (from MovieProducer in db.MovieProducers
                              from Person in db.People
                              where MovieProducer.MovieId == Id
                              where MovieProducer.PersonId == Person.Id
@@ -101,10 +101,10 @@ namespace cse2_db.Controllers
                                  Person.Image.ImageUrl,
                                  Person.BirthDate,
                                  Person.DeathDate
-                             }).ToList();
+                             }).ToListAsync();
 
             // Complexity: n+1
-            var cast = (from MovieCast in db.MovieCasts
+            var cast = await (from MovieCast in db.MovieCasts
                         from Person in db.People
                         where MovieCast.MovieId == Id
                         where MovieCast.PersonId == Person.Id
@@ -124,18 +124,16 @@ namespace cse2_db.Controllers
                                           where MovieCastCharacter.MovieCastId == MovieCast.Id
                                           where Character.Id == MovieCastCharacter.CharacterId
                                           select Character).ToList()
-                        }).ToList();
+                        }).ToListAsync();
 
-            var platforms = (from MoviePlatform in db.MoviePlatforms
+            var platforms = await (from MoviePlatform in db.MoviePlatforms
                              from Platform in db.Platforms
                              where MoviePlatform.MovieId == Id
                              where MoviePlatform.PlatformId == Platform.Id
-                             select Platform).ToList();
+                             select Platform).ToListAsync();
 
             // Complexity: 1
             var movie = (from Movie in db.Movies
-                         from MoviePlatform in db.MoviePlatforms
-                         where MoviePlatform.MovieId == Id
                           where Movie.Id == Id
                           select new
                           {
@@ -167,6 +165,33 @@ namespace cse2_db.Controllers
                 return NotFound(new ResWrapper { Status = "NotFound", args = new { Id }});
             
             return Ok(new ResWrapper{ Status = "OK", args = new { Id }, Data = movie.Single() });
+        }
+
+        public async Task<IActionResult> AddLanguage(long movieId, int languageId)
+        {
+            var language = await db.Languages
+                .Where(x => x.Id == languageId)
+                .SingleOrDefaultAsync();
+            if (language == null)
+                return NotFound(new ResWrapper { args = new { movieId, languageId }, Status = "NotFound:Language" });
+            
+            var movie = await db.Movies
+                .Where(x => x.Id == movieId)
+                .SingleOrDefaultAsync();
+            if (movie == null)
+                return NotFound(new ResWrapper { args = new { movieId, languageId }, Status = "NotFound:Movie" });
+
+            var movieLanguage = await db.MovieLanguages
+                .Where(x => x.MovieId == movieId && x.LanguageId == languageId)
+                .SingleOrDefaultAsync();
+            if (movieLanguage != null)
+                return Ok(new ResWrapper { args = new { movieId, languageId }, Status = "OK", Data = new { movie, language } });
+
+            movieLanguage = new MovieLanguage { Movie = movie, Language = language, LanguageId = languageId, MovieId = movieId };
+            await db.AddAsync(movieLanguage);
+            await db.SaveChangesAsync();
+
+            return Ok(new ResWrapper { args = new { movieId, languageId }, Status = "OK", Data = new { movie, language } });
         }
 
         // Request 8

@@ -38,9 +38,9 @@ namespace cse2_db
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHttpsRedirection();
             }
 
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

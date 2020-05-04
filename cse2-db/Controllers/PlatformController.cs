@@ -50,6 +50,7 @@ namespace cse2_db.Controllers
             db.SaveChanges();
             return Ok(new ResWrapper { Status = "OK", args = moviePlatform });
         }
+        // 
         public IActionResult BindTvSeries(long TvSeriesId, int PlatformId)
         {
             TvSeriesPlatform tvSeriesPlatform = new TvSeriesPlatform();
